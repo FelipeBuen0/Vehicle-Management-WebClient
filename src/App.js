@@ -7,7 +7,7 @@ import { PrimeReactProvider } from 'primereact/api';
 import 'primeicons/primeicons.css';
 const App = () => {
   const items = [
-    { label: 'Veículo', icon: 'pi pi-car', url: '/vehicle' },
+    { label: 'Veículos', icon: 'pi pi-car', url: '/vehicle' },
     { label: 'Cliente', icon: 'pi pi-user', url: '/driver' },
     { label: 'Vagas', icon: 'pi pi-desktop', url: '/parkingSlot' },
     { label: 'Alertas', icon: 'pi pi-comments', url: '/warnings' },

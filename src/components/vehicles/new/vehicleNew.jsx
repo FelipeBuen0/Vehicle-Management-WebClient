@@ -26,7 +26,7 @@ const VehicleNew = () => {
             showSuccess()
         }
         catch (e) {
-            console.error(e)
+            showError()
         }
     }
     return (
