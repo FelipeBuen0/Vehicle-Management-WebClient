@@ -1,25 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
-
-function App() {
+import React from 'react';
+import Main from './components/main';
+import { Link } from 'react-router-dom';
+import { Menubar } from 'primereact/menubar';
+import { ScrollPanel } from 'primereact/scrollpanel';
+import { PrimeReactProvider } from 'primereact/api';
+import 'primeicons/primeicons.css';
+const App = () => {
+  const items = [
+    { label: 'Veículo', icon: 'pi pi-car', url: '/vehicle' },
+    { label: 'Cliente', icon: 'pi pi-user', url: '/driver' },
+    { label: 'Vagas', icon: 'pi pi-desktop', url: '/parkingSlot' },
+    { label: 'Alertas', icon: 'pi pi-comments', url: '/warnings' },
+  ];
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <PrimeReactProvider>
+      <div>
+        <Menubar style={{ padding: '16px' }} model={items} end={<Link style={{ color: 'whitesmoke', textDecoration: 'none' }} to="/"><i className="pi pi-truck" aria-hidden="true" /> S.G.V.</Link>} />
+        <div className="main-container">
+          <div className="content-container">
+            <ScrollPanel>
+              <div className="page-content" />
+              <Main />
+            </ScrollPanel>
+          </div>
+        </div>
+      </div>
+    </PrimeReactProvider>
   );
-}
-
+};
 export default App;
