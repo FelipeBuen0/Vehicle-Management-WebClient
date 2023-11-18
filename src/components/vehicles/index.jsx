@@ -4,25 +4,23 @@ import { Button } from 'primereact/button';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { useNavigate } from 'react-router-dom';
-import fireStore from '../../firebase';
-import { collection, getDocs } from "firebase/firestore";
+import supabase from '../../lib/helper/supabaseClient';
 const Vehicle = () => {
     const [vehicles, setVehicle] = useState([]);
+    const [first, setFirst] = useState(0);
+
     let navigate = useNavigate();
-    const onNewClick = () => {
-        let path = 'new';
-        navigate(path);
+    const onNewClick = () => navigate('new');
+
+    const getVehicles = async () => {
+        const { data, error} = await supabase.from('Car').select('*');
+        console.log(data, error);
+        return { data, error};
     }
+
     useEffect(() => {
-        let items = [];
-        const getCollection = async () => {
-            const querySnapshot = await getDocs(collection(fireStore, "vehicles"));
-            querySnapshot.forEach((doc) => {
-                items.push(doc.data());
-                console.log(doc.data());
-            });
-        }
-        getCollection().then(() => setVehicle(items))
+        const record = getVehicles();
+        console.log(record);
     }, []);
 
     return (
@@ -35,7 +33,7 @@ const Vehicle = () => {
                 </DataTable>
             </Card>
             <div className="flex justify-content-end">
-                <Button style={{ margin: '16px' }} tooltip='Clique para adicionar veículos' label='Adicionar veículo' onClick={onNewClick} />
+                <Button style={{ margin: '16px' }} label='Adicionar veículo' onClick={onNewClick} />
             </div>
         </div>
     )

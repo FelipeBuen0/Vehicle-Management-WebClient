@@ -15,7 +15,10 @@ const App = () => {
   return (
     <PrimeReactProvider>
       <div>
-        <Menubar style={{ padding: '16px' }} model={items} end={<Link style={{ color: 'whitesmoke', textDecoration: 'none' }} to="/"><i className="pi pi-truck" aria-hidden="true" /> S.G.V.</Link>} />
+        <Menubar 
+          style={{ padding: '16px' }}
+          model={items}
+          end={<Link style={{ color: 'whitesmoke', textDecoration: 'none' }} to="/"><i className="pi pi-truck" aria-hidden="true" /> S.G.V.</Link>} />
         <div className="main-container">
           <div className="content-container">
             <ScrollPanel>
