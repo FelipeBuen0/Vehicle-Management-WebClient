@@ -14,6 +14,9 @@
 .form-vehicle .card .field {
     margin-bottom: 1.5rem;
 }
+.tip-error {
+    color: #CF6679;
+}
 @media screen and (max-width: 960px) {
     .form-vehicle .card {
         width: 90%;

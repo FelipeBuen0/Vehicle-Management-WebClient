@@ -3,13 +3,12 @@ import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
 import { InputNumber } from 'primereact/inputnumber';
 import { Toast } from 'primereact/toast';
-import './style.css';
 import supabase from '../../../lib/helper/supabaseClient';
 import { Dropdown } from 'primereact/dropdown';
-import { Calendar } from 'primereact/calendar';
-import { TabView } from 'primereact/tabview';
-import { TabMenu } from 'primereact/tabmenu';
 import { Fieldset } from 'primereact/fieldset';
+import { InputMask } from 'primereact/inputmask';
+import { useNavigate } from 'react-router-dom';
+import './style.css';
 const VehicleNew = () => {
     const [carName, setCarName] = useState('');
     const [sellPrice, setSellPrice] = useState();
@@ -20,26 +19,58 @@ const VehicleNew = () => {
     const [kilometers, setKilometers] = useState(0);
     const [renavam, setRenavam] = useState('');
     const [chassis, setChassis] = useState('');
-    const [carModelId, setCarModelId] = useState(0);
+    const [tip, setTip] = useState('');
     const toast = useRef(null);
+    const navigate = useNavigate();
 
     const options = [
-        { name: 'Álcool', value: 1 },
-        { name: 'Gasolina', value: 2 },
-        { name: 'Diesel', value: 3 },
-        { name: 'Elétrico', value: 4 },
+        { name: 'Álcool', value: 'Alcool' },
+        { name: 'Gasolina', value: 'Gasolina' },
+        { name: 'Diesel', value: 'Diesel' },
+        { name: 'Elétrico', value: 'Elétrico' },
     ]
 
-    const showSuccess = () => { toast.current.show({ severity: 'success', summary: 'Success', detail: 'Veículo adicionado com sucesso!', life: 3000 }) };
-    const showError = () => { toast.current.show({ severity: 'error', summary: 'Error', detail: 'Não foi possível adicionar o veículo!', life: 3000 }) };
+    const showSuccess = () => {
+        toast.current.show({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Veículo adicionado com sucesso!',
+            life: 3000
+        })
+    };
+    const showError = () => {
+        toast.current.show({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Não foi possível adicionar o veículo!',
+            life: 3000
+        })
+    };
 
-    const onSave = async (e) => {
+    const validateForm = (e) => {
         e.preventDefault();
-        let data = {
-            name: carName,
-            sellPrice: sellPrice,
-            color: carColor
+        if (carName.length <= 2) {
+            return setTip('O nome do veículo deve conter pelo menos mais que duas letras!');
         }
+        if (!chassis.length) {
+            return setTip('O chassi do veículo é necessário para prosseguir')
+        }
+        if (kilometers < 0) {
+            return setTip('A quilometragem não pode ser menor que 0!');
+        }
+        if (!renavam) {
+            return setTip('Renavam do veículo é necessário para prosseguir');
+        }
+        if (!fuelType) {
+            return setTip('O tipo de combustível é necessário para prosseguir');
+        }
+        if (!sellPrice) {
+            return setTip('O preço de venda é necessário para prosseguir');
+        }
+        return onSave();
+    }
+
+    const onSave = async () => {
         try {
             const { error } = await supabase.from('Car').insert({
                 name: carName,
@@ -55,8 +86,12 @@ const VehicleNew = () => {
                 chassis: chassis
             });
             showSuccess()
+            if (!error) {
+                navigate('/vehicle')
+            }
         }
         catch (e) {
+            console.log(e);
             showError()
         }
     }
@@ -82,7 +117,7 @@ const VehicleNew = () => {
                                 <i className="pi pi-palette"></i>
                             </span>
                             <span className="p-float-label">
-                                <InputText id="carColor" value={carColor} onChange={(e) => setCarColor(e.target.value)} placeholder="Ex: Prata" />
+                                <InputText keyfilter="alpha" id="carColor" value={carColor} onChange={(e) => setCarColor(e.target.value)} placeholder="Ex: Prata" />
                                 <label htmlFor="carColor">Cor do veículo</label>
                             </span>
                         </div>
@@ -91,7 +126,7 @@ const VehicleNew = () => {
                         <div className="p-inputgroup flex-1 input-m">
                             <span className="p-inputgroup-addon"><i className='pi pi-ticket'></i></span>
                             <span className='p-float-label'>
-                                <InputText id="plateNumber" value={plateNumber} onChange={(e) => setPlateNumber(e.target.value)} placeholder="ABC-1234" />
+                                <InputMask mask="aaa-9999" id="plateNumber" value={plateNumber} onChange={(e) => setPlateNumber(e.target.value)} />
                                 <label htmlFor="plateNumber">Placa do veíulo</label>
                             </span>
                         </div>
@@ -109,7 +144,7 @@ const VehicleNew = () => {
                         <div className="p-inputgroup flex-1 input-m">
                             <span className="p-inputgroup-addon">Km</span>
                             <span className='p-float-label'>
-                                <InputText id="kilometers" value={kilometers} onChange={(e) => setKilometers(e.target.value)} />
+                                <InputNumber id="kilometers" value={kilometers} onChange={(e) => setKilometers(e.value)} />
                                 <label htmlFor="kilometers">Quilometragem</label>
                             </span>
                         </div>
@@ -118,15 +153,16 @@ const VehicleNew = () => {
                         <div className="p-inputgroup flex-1 input-m">
                             <span className="p-inputgroup-addon"><i className='pi pi-wallet'></i></span>
                             <span className='p-float-label'>
-                                <InputText id="renavam" value={renavam} onChange={(e) => setRenavam(e.target.value)} />
+                                <InputText keyfilter="int" id="renavam" value={renavam} onChange={(e) => setRenavam(e.target.value)} />
                                 <label htmlFor="renavam"> Renavam </label>
                             </span>
                         </div>
                     </div>
                     <div className='flex'>
                         <div className="p-inputgroup flex-1 input-m">
+                            <span className="p-inputgroup-addon"><i className='pi pi-calendar'></i></span>
                             <span className='p-float-label'>
-                                <Calendar id="carYear" showIcon value={carYear} onChange={(e) => setCarYear(e.value)} placeholder="2019" />
+                                <InputText keyfilter='int' maxLength='4' id="carYear" value={carYear} onChange={(e) => setCarYear(e.target.value)} placeholder="2019" />
                                 <label htmlFor="carYear">Ano do veículo</label>
                             </span>
                         </div>
@@ -150,8 +186,9 @@ const VehicleNew = () => {
                             <span className="p-inputgroup-addon">.00</span>
                         </div>
                     </div>
-                    <div className="flex justify-content-end button-m">
-                        <Button style={{ margin: '4px' }} label='Salvar' onClick={onSave} />
+                    <div className="flex justify-content-between button-m">
+                        <p className='tip-error'>{tip}</p>
+                        <Button style={{ margin: '4px' }} label='Salvar' onClick={validateForm} />
                     </div>
                 </Fieldset>
             </div>

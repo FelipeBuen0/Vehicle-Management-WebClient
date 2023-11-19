@@ -1,8 +1,8 @@
-.login-header {
+.register-header {
     font-size: 32px;
     font-weight: 400;
 }
-.login-header p {
+.register-header p {
     margin-bottom: 1.2em;
 }
 .error-tip {
@@ -16,8 +16,8 @@
     width: 320px;
 }
 
-.jjba_ref01 {
-    background: url('../../resources/Unit_ZZ_29.png');
+.jjba_ref02 {
+    background: url('../../resources/emporio_head1.png');
     background-position: center;
     background-repeat: no-repeat;
     background-size: contain;
