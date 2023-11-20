@@ -1,6 +1,6 @@
 //theme
 import "primereact/resources/themes/arya-blue/theme.css";  
-import "primeflex/themes/primeone-dark.css";  
+// import "primeflex/themes/primeone-dark.css";  
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from "react-router-dom";

@@ -5,10 +5,12 @@ import React, { useState } from 'react'
 import './style.css';
 import { Button } from 'primereact/button';
 import supabase from '../../lib/helper/supabaseClient';
+import { useNavigate } from 'react-router-dom';
 export const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(false);
+  const navigate = useNavigate();
 
   const onLogin = async () => {
     try {
@@ -26,6 +28,7 @@ export const Login = () => {
 
   const signInSuccess = (data) => {
     localStorage.setItem('tk', data.session.access_token);
+    navigate('/');
   }
 
   let tip = <p></p>;

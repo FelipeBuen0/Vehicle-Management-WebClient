@@ -1,0 +1,55 @@
+
+.form-vehicle .card {
+    margin-top: 1rem;
+    min-width: 550px;
+}
+.form-vehicle .card form {
+    margin-top: 2rem;
+}
+.form-vehicle .card .input-m {
+    margin: 1rem;
+    width: 100%; /* Adjust the width as needed */
+}
+
+.form-vehicle .card .button-m {
+    margin-right: 1rem;
+}
+.form-vehicle .card .field {
+    margin-bottom: 1.5rem;
+}
+.tip-error {
+    color: #CF6679;
+}
+
+.form-vehicle .flex {
+    display: flex;
+    flex-wrap: wrap; /* Allow items to wrap to the next line on smaller screens */
+}
+
+@media screen and (max-width: 960px) {
+    .form-vehicle .card {
+        width: 100%;
+        margin: 0; /* Adjust margin as needed */
+    }
+    .form-vehicle .card .input-m {
+        margin: 0.4rem;
+        width: 100%; /* Adjust the width as needed */
+    }
+}
+
+@media screen and (max-width: 640px) {
+    .form-vehicle .card {
+        width: 100%;
+        min-width: 0;
+        margin: 0; /* Adjust margin as needed */
+    }
+    .form-vehicle .card .button-m button {
+        width: 100%;
+    }
+    .form-vehicle .card .input-m {
+        margin: 0rem;
+        margin-top: 0.8em;
+        margin-bottom: 0.8em;
+        width: 100%; /* Adjust the width as needed */
+    }
+}
